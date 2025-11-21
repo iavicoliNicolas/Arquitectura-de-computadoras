@@ -44,10 +44,61 @@ semana (siendo 0 domingo y 6 sábado) como en el ejercicio anterior. Del mismo m
 escribir una función “weekday_reset”, con los mismos parámetros, para configurar el bit en
 0.
 */
-void wee
+void weekday_set(char *byte, int dia) {
+    if (dia >= 0 && dia <= 6) {
+        *byte |= (1 << dia);
+    }
+}
+
+void weekday_reset(char *byte, int dia) {
+    if (dia >= 0 && dia <= 6) {
+        *byte &= ~(1 << dia);
+    }
+}
 
 int main(int argc, char const *argv[])
 {
-    
+
+    int funcion;
+    printf("Seleccione la función a ejecutar:\n1. Rellenar binarios\n2. Verificar complemento a dos\n3. Imprimir días activos y modificar días\n");
+    scanf("%d", &funcion);
+
+    switch(funcion) {
+        case 1: {
+            int nro;
+            char binarios[33];
+            printf("Ingrese un número entero: ");
+            scanf("%d", &nro);
+            rellenaBinarios(nro, binarios);
+            printf("Representación binaria: %s\n", binarios);
+            break;
+        }
+        case 2: {
+            int nro;
+            printf("Ingrese un número entero: ");
+            scanf("%d", &nro);
+            verificaComplementoADos(nro);
+            break;
+        }
+        case 3:
+        {
+            char dias = 0;
+            // Configurar días activos
+            weekday_set(&dias, 0); // Domingo
+            weekday_set(&dias, 1); // Lunes
+            weekday_set(&dias, 3); // Miércoles
+
+            imprimeDiasActivos(dias);
+
+            // Restablecer un día
+            weekday_reset(&dias, 1); // Restablecer Lunes
+            imprimeDiasActivos(dias);
+            break;
+        default:
+            printf("Opción no válida.\n");
+            return 1;
+    }
+ 
+
     return 0;
 }
